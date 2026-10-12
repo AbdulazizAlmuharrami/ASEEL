@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}How ASEEL Works | ASEEL{% endblock %}
+{% block content %}
+<section class="verify-intro">
+  <p class="eyebrow">Capstone walkthrough</p>
+  <h1>How ASEEL works</h1>
+  <p class="muted">ASEEL is not a perfume shop. It is an authentication layer: one unique QR tag per box, linked to a registered record that customers can compare with the physical packaging.</p>
+</section>
+
+<section class="steps">
+  <article class="panel">
+    <span>01</span>
+    <h2>Admin registers a unit</h2>
+    <p>A brand owner records the perfume name, brand, batch, unique box serial, seller, and place of sale. Batch numbers may repeat. Box serials must be unique.</p>
+  </article>
+  <article class="panel">
+    <span>02</span>
+    <h2>ASEEL generates a Smart QR Tag</h2>
+    <p>Each unit receives a unique verification code and a QR image that opens the public record. Print it and place it on the box or bottle.</p>
+  </article>
+  <article class="panel">
+    <span>03</span>
+    <h2>The customer scans</h2>
+    <p>No account is required. The customer scans the tag or types the code, then checks whether the on-screen details match the physical packaging.</p>
+  </article>
+  <article class="panel">
+    <span>04</span>
+    <h2>Scan count is evidence</h2>
+    <p>Every public scan is logged. After the threshold (default 5), ASEEL shows an authenticity warning and marks the unit as Suspicious, because the same code may have been copied.</p>
+  </article>
+</section>
+
+<section class="panel demo-script">
+  <h2>Suggested 2-minute demo</h2>
+  <ol>
+    <li>Open the home page and verify <strong>Royal Oud</strong> — authentic green record.</li>
+    <li>Verify <strong>FAKE-123</strong> — red Product Not Verified, logged as an invalid attempt.</li>
+    <li>Log in as admin and register a new perfume. Download or print the QR.</li>
+    <li>Open the new public record and watch the scan count increase.</li>
+    <li>Scan <strong>Amber Night</strong> more than five times to trigger the warning and Suspicious status.</li>
+    <li>Use <strong>Reset scan count</strong> if you need to replay the sequence.</li>
+  </ol>
+  <div class="hero-actions">
+    <a class="btn btn-gold" href="{{ url_for('public.verify_lookup') }}">Start verification</a>
+    <a class="btn btn-ghost" href="{{ url_for('auth.login') }}">Admin login</a>
+  </div>
+</section>
+{% endblock %}

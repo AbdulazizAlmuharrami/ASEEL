@@ -1,0 +1,62 @@
+{% extends "admin/base.html" %}
+{% block title %}Scan Activity | ASEEL{% endblock %}
+{% block admin_content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">Audit trail</p>
+    <h1>Scan activity</h1>
+    <p class="muted">Genuine scans, authenticity warnings, disabled codes, and unregistered attempts.</p>
+  </div>
+</section>
+
+<section class="panel">
+  <form method="get" class="search-bar">
+    <label>
+      Result
+      <select name="result">
+        <option value="">All results</option>
+        <option value="Verified" {% if result_filter == 'Verified' %}selected{% endif %}>Verified</option>
+        <option value="Warning" {% if result_filter == 'Warning' %}selected{% endif %}>Warning</option>
+        <option value="Disabled" {% if result_filter == 'Disabled' %}selected{% endif %}>Disabled</option>
+        <option value="Not Verified" {% if result_filter == 'Not Verified' %}selected{% endif %}>Not Verified</option>
+      </select>
+    </label>
+    <button class="btn btn-gold" type="submit">Filter</button>
+    {% if result_filter %}
+      <a class="btn btn-ghost" href="{{ url_for('admin.scan_activity') }}">Clear</a>
+    {% endif %}
+  </form>
+  {% if logs %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Code</th>
+            <th>Result</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in logs %}
+            <tr>
+              <td>{{ row.scanned_at }}</td>
+              <td>{{ row.unique_code }}</td>
+              <td><span class="pill pill-{{ row.result_status|lower|replace(' ', '-') }}">{{ row.result_status }}</span></td>
+              <td>{{ row.notes or "—" }}</td>
+              <td>
+                {% if row.perfume_id %}
+                  <a class="link-btn" href="{{ url_for('admin.product_detail', perfume_id=row.perfume_id) }}">Open record</a>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">No scan activity yet.</p>
+  {% endif %}
+</section>
+{% endblock %}

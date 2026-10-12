@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}Edit Product | ASEEL{% endblock %}
+{% block admin_content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">{{ perfume.unique_code }}</p>
+    <h1>Edit product details</h1>
+  </div>
+</section>
+<form method="post" class="form-grid panel">
+  {% include "admin/_perfume_fields.html" %}
+  <div class="form-actions">
+    <button class="btn btn-gold" type="submit">Save changes</button>
+    <a class="btn btn-ghost" href="{{ url_for('admin.product_detail', perfume_id=perfume.id) }}">Cancel</a>
+  </div>
+</form>
+{% endblock %}

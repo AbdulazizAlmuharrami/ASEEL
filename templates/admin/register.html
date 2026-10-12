@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% block title %}Register Perfume | ASEEL{% endblock %}
+{% block admin_content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">New unit</p>
+    <h1>Register a perfume</h1>
+    <p class="muted">Each individual box needs a unique serial number. A serial is suggested for you; ASEEL then generates a unique verification code and QR tag.</p>
+  </div>
+</section>
+<form method="post" class="form-grid panel">
+  {% include "admin/_perfume_fields.html" %}
+  <div class="form-actions">
+    <button class="btn btn-gold" type="submit">Save record and generate QR</button>
+  </div>
+</form>
+{% endblock %}

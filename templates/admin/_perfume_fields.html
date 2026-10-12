@@ -1,0 +1,45 @@
+<label>
+  Perfume name
+  <input type="text" name="perfume_name" required value="{{ form.perfume_name or '' }}">
+</label>
+<label>
+  Brand name
+  <input type="text" name="brand_name" required value="{{ form.brand_name or '' }}">
+</label>
+<label>
+  Batch number
+  <input type="text" name="batch_number" required value="{{ form.batch_number or '' }}">
+</label>
+<label>
+  Unique box / serial number
+  <input type="text" name="box_serial_number" required value="{{ form.box_serial_number or '' }}">
+</label>
+<label>
+  Manufacturing date
+  <input type="date" name="manufacturing_date" required value="{{ form.manufacturing_date or '' }}">
+</label>
+<label>
+  Authorized seller
+  <input type="text" name="authorized_seller" required value="{{ form.authorized_seller or '' }}">
+</label>
+<label>
+  Registered place of sale
+  <input type="text" name="place_of_sale" required value="{{ form.place_of_sale or '' }}">
+</label>
+<label>
+  Status
+  <select name="status" required>
+    {% set current = form.status or 'Genuine' %}
+    <option value="Genuine" {% if current == 'Genuine' %}selected{% endif %}>Genuine</option>
+    <option value="Suspicious" {% if current == 'Suspicious' %}selected{% endif %}>Suspicious</option>
+    <option value="Disabled" {% if current == 'Disabled' %}selected{% endif %}>Disabled</option>
+  </select>
+</label>
+<label>
+  Scan threshold
+  <input type="number" min="1" name="scan_threshold" value="{{ form.scan_threshold or 5 }}">
+</label>
+<label class="full">
+  Optional notes
+  <textarea name="notes" rows="4">{{ form.notes or '' }}</textarea>
+</label>

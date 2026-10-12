@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Admin Login | ASEEL{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <img class="auth-logo" src="{{ url_for('static', filename='img/aseel-logo.jpg') }}" alt="ASEEL logo">
+  <p class="eyebrow">Restricted access</p>
+  <h1>Admin Login</h1>
+  <p class="muted">Only brand owners, researchers, and administrators can manage perfume records.</p>
+  <form method="post" class="form-stack">
+    {% if request.args.get('next') %}
+      <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+    {% endif %}
+    <label>
+      Email
+      <input type="email" name="email" autocomplete="username" required placeholder="admin@aseel.ae">
+    </label>
+    <label>
+      Password
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn btn-gold" type="submit">Sign in</button>
+  </form>
+</section>
+{% endblock %}

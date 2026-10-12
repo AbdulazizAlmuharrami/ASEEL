@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Authentication Record | ASEEL{% endblock %}
+{% block body_class %}verify-page{% endblock %}
+{% block content %}
+<section class="record {{ state }}">
+  {% if state == 'verified' %}
+    <div class="status-banner status-verified">
+      <p class="status-kicker">Authentication status</p>
+      <h1>AUTHENTIC PRODUCT</h1>
+      <p>Registered in ASEEL authentication system</p>
+    </div>
+  {% elif state == 'warning' %}
+    <div class="status-banner status-warning">
+      <p class="status-kicker">Authentication status</p>
+      <h1>AUTHENTICITY WARNING</h1>
+      <p>This QR code exists in ASEEL, but it has been scanned multiple times. Please carefully compare the details with your physical product.</p>
+    </div>
+  {% elif state == 'disabled' %}
+    <div class="status-banner status-danger">
+      <p class="status-kicker">Authentication status</p>
+      <h1>CODE DISABLED</h1>
+      <p>This authentication code is no longer active. It should not be used to confirm a genuine product.</p>
+    </div>
+  {% else %}
+    <div class="status-banner status-danger">
+      <p class="status-kicker">Authentication status</p>
+      <h1>PRODUCT NOT VERIFIED</h1>
+      <p>This code was not found in ASEEL’s authentication database. The product may be counterfeit, unregistered, or using an invalid QR code.</p>
+    </div>
+  {% endif %}
+
+  <div class="record-body">
+    <p class="record-label">ASEEL authentication record</p>
+    <p class="code-line">Unique code: <strong>{{ unique_code }}</strong></p>
+
+    {% if perfume %}
+      <dl class="record-grid">
+        <div><dt>Perfume Name</dt><dd>{{ perfume.perfume_name }}</dd></div>
+        <div><dt>Brand</dt><dd>{{ perfume.brand_name }}</dd></div>
+        <div><dt>Batch Number</dt><dd>{{ perfume.batch_number }}</dd></div>
+        <div><dt>Unique Box / Serial Number</dt><dd>{{ perfume.box_serial_number }}</dd></div>
+        <div><dt>Authorized Seller</dt><dd>{{ perfume.authorized_seller }}</dd></div>
+        <div><dt>Registered Place of Sale</dt><dd>{{ perfume.place_of_sale }}</dd></div>
+        <div><dt>Manufacturing Date</dt><dd>{{ perfume.manufacturing_date }}</dd></div>
+        <div><dt>Product Status</dt><dd>{{ perfume.status }}</dd></div>
+        <div><dt>Current Scan Count</dt><dd>{{ scan_count }}</dd></div>
+        <div><dt>Scan Threshold</dt><dd>{{ perfume.scan_threshold }}</dd></div>
+      </dl>
+
+      {% if state == 'warning' %}
+        <aside class="instruction warning-box">
+          This QR code is registered, but it has been scanned many times. This may happen if the code was copied and reused on other products. Please carefully compare the details with your physical perfume packaging.
+        </aside>
+      {% elif state != 'disabled' %}
+        <aside class="instruction">
+          Please compare the details above with the information printed on your physical perfume box or bottle. If the batch number, box number, seller, or location does not match, the product may be suspicious.
+        </aside>
+        <ul class="compare-list">
+          <li>Does the perfume name match the box?</li>
+          <li>Does the batch number match?</li>
+          <li>Does the unique box / serial number match?</li>
+          <li>Is the seller and place of sale consistent with where you bought it?</li>
+        </ul>
+      {% endif %}
+    {% else %}
+      <aside class="instruction danger-box">
+        This code was not found in ASEEL’s authentication database. The product may be counterfeit, unregistered, or using an invalid QR code.
+      </aside>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

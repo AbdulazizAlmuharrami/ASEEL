@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block body_class %}admin-page{% endblock %}
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-side">
+    <p class="eyebrow">Admin</p>
+    <h2>Control room</h2>
+    <nav>
+      <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('admin.register') }}">Register perfume</a>
+      <a href="{{ url_for('admin.scan_activity') }}">Scan activity</a>
+    </nav>
+    <form method="post" action="{{ url_for('auth.logout') }}">
+      <button class="btn btn-ghost" type="submit">Log out</button>
+    </form>
+  </aside>
+  <div class="admin-main">
+    {% block admin_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

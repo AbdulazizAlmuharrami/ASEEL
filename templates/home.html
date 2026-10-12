@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}ASEEL | Authenticity, Verified.{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block content %}
+<section class="hero">
+  <img class="hero-logo" src="{{ url_for('static', filename='img/aseel-logo.jpg') }}" alt="ASEEL logo">
+  <p class="eyebrow">UAE Perfume Authentication</p>
+  <h1>Authenticity, Verified.</h1>
+  <p class="lead">Anyone can verify a perfume. Scan the Smart QR Tag or type the unique code — no account is required. Only brand admins log in to register products.</p>
+  <div class="hero-actions">
+    <a class="btn btn-gold" href="{{ url_for('public.verify_lookup') }}">Scan or Verify Product</a>
+    <a class="btn btn-ghost" href="{{ url_for('public.how_it_works') }}">How it works</a>
+    <a class="btn btn-ghost" href="{{ url_for('auth.login') }}">Admin Login</a>
+  </div>
+</section>
+
+<section class="demo-codes panel">
+  <p class="eyebrow">Capstone demo</p>
+  <h2>Try these sample codes</h2>
+  <p class="muted">Open them on this computer, or scan the printed QR from the dashboard.</p>
+  <div class="demo-links">
+    <a href="{{ url_for('public.verify', unique_code='ASEEL-ROYAL-OUD-001') }}">Royal Oud — authentic</a>
+    <a href="{{ url_for('public.verify', unique_code='ASEEL-AMBER-NIGHT-003') }}">Amber Night — scan several times for a warning</a>
+    <a href="{{ url_for('public.verify', unique_code='FAKE-123') }}">FAKE-123 — not verified</a>
+  </div>
+</section>
+
+<section class="info-grid">
+  <article>
+    <span>01</span>
+    <h2>Unique QR for every box</h2>
+    <p>Each perfume unit is registered with its own serial number and Smart QR Tag. Batch numbers may repeat; box numbers never should.</p>
+  </article>
+  <article>
+    <span>02</span>
+    <h2>Scan to cross-check</h2>
+    <p>Customers scan the tag and compare the authentication record with the details printed on the physical box or bottle.</p>
+  </article>
+  <article>
+    <span>03</span>
+    <h2>Scan history matters</h2>
+    <p>Repeated scans of the same code can signal copying or reuse. ASEEL flags unusually high scan counts as a warning.</p>
+  </article>
+</section>
+{% endblock %}

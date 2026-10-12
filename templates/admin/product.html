@@ -1,0 +1,111 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ perfume.perfume_name }} | ASEEL{% endblock %}
+{% block admin_content %}
+<section class="page-head">
+  <div>
+    <p class="eyebrow">{{ perfume.unique_code }}</p>
+    <h1>{{ perfume.perfume_name }}</h1>
+    <p class="muted">{{ perfume.brand_name }} · {{ perfume.box_serial_number }}</p>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-ghost" href="{{ url_for('admin.edit_product', perfume_id=perfume.id) }}">Edit product details</a>
+    <a class="btn btn-gold" href="{{ url_for('public.verify', unique_code=perfume.unique_code) }}" target="_blank" rel="noopener">Open public record</a>
+  </div>
+</section>
+
+<section class="split-panels">
+  <div class="panel">
+    <h2>Registered details</h2>
+    <dl class="record-grid compact">
+      <div><dt>Perfume name</dt><dd>{{ perfume.perfume_name }}</dd></div>
+      <div><dt>Brand</dt><dd>{{ perfume.brand_name }}</dd></div>
+      <div><dt>Batch number</dt><dd>{{ perfume.batch_number }}</dd></div>
+      <div><dt>Box / serial</dt><dd>{{ perfume.box_serial_number }}</dd></div>
+      <div><dt>Manufacturing date</dt><dd>{{ perfume.manufacturing_date }}</dd></div>
+      <div><dt>Authorized seller</dt><dd>{{ perfume.authorized_seller }}</dd></div>
+      <div><dt>Place of sale</dt><dd>{{ perfume.place_of_sale }}</dd></div>
+      <div><dt>Status</dt><dd>{{ perfume.status }}</dd></div>
+      <div><dt>Scan count</dt><dd>{{ perfume.scan_count }}</dd></div>
+      <div><dt>Scan threshold</dt><dd>{{ perfume.scan_threshold }}</dd></div>
+      <div class="full"><dt>Notes</dt><dd>{{ perfume.notes or "—" }}</dd></div>
+    </dl>
+    <div class="hero-actions">
+      <form method="post" action="{{ url_for('admin.update_status', perfume_id=perfume.id) }}">
+        <input type="hidden" name="status" value="Suspicious">
+        <button class="btn btn-warn" type="submit">Mark as Suspicious</button>
+      </form>
+      <form method="post" action="{{ url_for('admin.update_status', perfume_id=perfume.id) }}" onsubmit="return confirm('Disable this authentication code? Customers will see Code Disabled.');">
+        <input type="hidden" name="status" value="Disabled">
+        <button class="btn btn-danger" type="submit">Disable the code</button>
+      </form>
+      {% if perfume.status != 'Genuine' %}
+      <form method="post" action="{{ url_for('admin.update_status', perfume_id=perfume.id) }}">
+        <input type="hidden" name="status" value="Genuine">
+        <button class="btn btn-ghost" type="submit">Restore Genuine</button>
+      </form>
+      {% endif %}
+      <form method="post" action="{{ url_for('admin.reset_scans', perfume_id=perfume.id) }}" onsubmit="return confirm('Reset scan count and restore Genuine status?');">
+        <button class="btn btn-ghost" type="submit">Reset scan count</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel qr-panel">
+    <h2>Smart QR Tag</h2>
+    <img src="{{ url_for('static', filename='qr/' + qr_file) }}" alt="QR code for {{ perfume.unique_code }}">
+    <p class="muted break-all" id="public-url">{{ public_url }}</p>
+    {% if uses_localhost %}
+      <p class="muted">This QR currently points at localhost. Set BASE_URL to your LAN IP before a phone demo, then reopen this page to regenerate the tag.</p>
+    {% endif %}
+    <div class="hero-actions">
+      <button class="btn btn-ghost" type="button" id="copy-url">Copy URL</button>
+      <a class="btn btn-gold" href="{{ url_for('admin.download_qr', perfume_id=perfume.id) }}">Download PNG</a>
+      <a class="btn btn-ghost" href="{{ url_for('admin.print_qr', perfume_id=perfume.id) }}">Print sticker</a>
+    </div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Scan history</h2>
+  {% if logs %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date and time</th>
+            <th>Result</th>
+            <th>Device / browser</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+            <tr>
+              <td>{{ log.scanned_at }}</td>
+              <td><span class="pill pill-{{ log.result_status|lower|replace(' ', '-') }}">{{ log.result_status }}</span></td>
+              <td class="ua">{{ log.user_agent or "—" }}</td>
+              <td>{{ log.notes or "—" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="muted">This code has not been scanned yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+  (function () {
+    var button = document.getElementById("copy-url");
+    var url = document.getElementById("public-url");
+    if (!button || !url) return;
+    button.addEventListener("click", function () {
+      navigator.clipboard.writeText(url.textContent.trim()).then(function () {
+        button.textContent = "Copied";
+      });
+    });
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Page not found | ASEEL{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <p class="eyebrow">404</p>
+  <h1>Page not found</h1>
+  <p class="muted">This address is not part of the ASEEL authentication prototype. If you were scanning a QR tag, go back to Verify and enter the unique code.</p>
+  <div class="hero-actions">
+    <a class="btn btn-gold" href="{{ url_for('public.home') }}">Home</a>
+    <a class="btn btn-ghost" href="{{ url_for('public.verify_lookup') }}">Verify a product</a>
+  </div>
+</section>
+{% endblock %}

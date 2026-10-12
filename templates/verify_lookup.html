@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Verify Product | ASEEL{% endblock %}
+{% block content %}
+<section class="verify-intro">
+  <p class="eyebrow">Public verification</p>
+  <h1>Scan or enter a code</h1>
+  <p class="muted">This page is public. Allow camera access and hold the Smart QR Tag in the frame, or type the unique code printed with it. Phone browsers need HTTPS for the camera (the public website provides that).</p>
+</section>
+
+<section class="verify-tools">
+  <div class="panel">
+    <h2>Camera scan</h2>
+    <p>Allow camera access, then hold the QR code inside the frame.</p>
+    <div id="qr-reader"></div>
+    <p id="scan-status" class="muted">Waiting for camera…</p>
+  </div>
+  <div class="panel">
+    <h2>Enter unique code</h2>
+    <form method="post" class="form-stack">
+      <label>
+        Unique verification code
+        <input type="text" name="code" required placeholder="ASEEL-XXXX">
+      </label>
+      <button class="btn btn-gold" type="submit">Verify product</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="{{ url_for('static', filename='js/scan.js') }}"></script>
+{% endblock %}
